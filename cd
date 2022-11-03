@@ -1,12 +1,30 @@
 pipeline {
-    agent any
-    environment { 
-        CREDENTIALS_ID = 'mostafa-ashour-project'
+    agent {
+    kubernetes {
+      yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: buildah
+spec:
+  containers:
+  - name: buildah
+    image: bitnami/kubectl
+    command:
+    - cat
+    tty: true
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: varlibcontainers
+        mountPath: /var/lib/containers
+  volumes:
+    - name: varlibcontainers
+'''   
     }
     stages {
 	    stage('Apply Kubernetes files') {
 	     steps {
-	     sh 'apt-get update && apt-get install kubectl -y'
 	    withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://172.16.0.2']) {
 	      sh 'kubectl apply -f deployment.yaml -n prod'
 	    }
