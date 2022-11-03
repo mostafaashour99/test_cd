@@ -4,7 +4,7 @@ pipeline {
         PROJECT_ID = 'mostafa-ashour-project'
         CLUSTER_NAME = 'primary'
         LOCATION = 'us-central1-a'
-        CREDENTIALS_ID = FileCredentials('service-account')
+        CREDENTIALS_ID = 'mostafa-ashour-project'
     }
     stages {
         stage('Deploy to GKE') {
