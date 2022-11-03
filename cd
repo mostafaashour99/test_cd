@@ -6,8 +6,9 @@ pipeline {
     stages {
 	    stage('Apply Kubernetes files') {
 	     steps {
+	     sh 'apt-get update && apt-get install kubectl -y'
 	    withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://172.16.0.2']) {
-	      sh 'kubectl apply -f deployment.yaml'
+	      sh 'kubectl apply -f deployment.yaml -n prod'
 	    }
 	    }
   }    
