@@ -3,10 +3,10 @@ pipeline {
     environment { 
         CREDENTIALS_ID = 'mostafa-ashour-project'
     }
-    stages{
+    stages {
     stage('Apply Kubernetes files') {
     withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://172.16.0.2']) {
-      sh 'kubectl apply -f deployment.yanl'
+      sh 'kubectl apply -f deployment.yaml'
     }
   }    
 }
