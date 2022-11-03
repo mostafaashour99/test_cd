@@ -1,16 +1,13 @@
 pipeline {
     agent any
     environment {
-        PROJECT_ID = 'mostafa-ashour-project'
-        CLUSTER_NAME = 'primary'
-        LOCATION = 'us-central1-a'
+      
         CREDENTIALS_ID = 'mostafa-ashour-project'
     }
-    stages {
-        stage('Deploy to GKE') {
-            steps{
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: './deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-            }
-        }
-    }    
+    
+    stage('Apply Kubernetes files') {
+    withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: 'https://172.16.0.2']) {
+      sh 'kubectl apply -f deployment.yanl'
+    }
+  }    
 }
